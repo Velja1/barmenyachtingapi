@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BarmenYachting.Application\BarmenYachting.Application.csproj" />
+    <ProjectReference Include="..\BarmenYachting.DataAccess\BarmenYachting.DataAccess.csproj" />
+    <ProjectReference Include="..\BarmenYachting.Implementation\BarmenYachting.Implementation.csproj" />
+  </ItemGroup>
+
+</Project>
