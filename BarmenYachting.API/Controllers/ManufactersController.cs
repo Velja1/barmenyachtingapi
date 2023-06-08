@@ -26,12 +26,52 @@ namespace BarmenYachting.API.Controllers
             _dbLogger = dbLogger;
         }
 
+        /// <summary>
+        /// Get Manufacters.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/manufacters/?keyword=mon&perpage=2&page=1
+
+        ///
+        /// </remarks>
+        /// <param name="keyword"></param>
+        /// <param name="&perpage"></param>
+        /// <param name="&page"></param>
+        /// <returns>A paged query response with objects</returns>
+        /// <response code="200">Returns the manufacter query</response>
+        /// <response code="500">Returns Server error</response>         
         [HttpGet]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] IGetManufactersQuery query)
         {
-            return Ok(_handler.HandleQuery(query, search));
+            try
+            {
+                return Ok(_handler.HandleQuery(query, search));
+            }
+            catch (Exception ex)
+            {
+                _dbLogger.Log("Error getting manufacter", ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting manufacter: " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Creates a Manufacter.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/manufacters
+        ///     {
+        ///         "Name" : "ManufacterNew"
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>Successfully created manufacter message</returns>
+        /// <response code="201">Returns the successfully created message</response>
+        /// <response code="422">Returns the unprocessable entity error</response>
+        /// <response code="500">Returns Server error</response>   
         [HttpPost]
         public IActionResult CreateManufacter([FromBody] CreateManufacterDto dto, [FromServices] ICreateManufacterCommand command)
         {
@@ -52,7 +92,20 @@ namespace BarmenYachting.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error creating manufacter: " + ex.Message);
             }
         }
-        
+
+        /// <summary>
+        /// Deletes a Manufacter.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/manufacters/11
+        ///
+        /// </remarks>
+        /// <returns>Successfully deleted manufacter message</returns>
+        /// <response code="200">Returns the deleted message</response>
+        /// <response code="404">Returns the entity not found error</response>
+        /// <response code="500">Returns Server error</response>   
         [HttpDelete("{id}")]
         public IActionResult Delete(int id, [FromServices] IDeleteManufacterCommand command)
         {

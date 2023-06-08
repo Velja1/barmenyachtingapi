@@ -26,6 +26,21 @@ namespace BarmenYachting.API.Controllers
             _dbLogger = dbLogger;
             _context = context;
         }
+
+        /// <summary>
+        /// Creates a Initial Data.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /initialdata
+        ///     {
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>A newly created TodoItem</returns>
+        /// <response code="201">If the data was successfully added to database</response>
+        /// <response code="409">If the action already executed on database</response>            
         [HttpPost]
         public IActionResult Post()
         {

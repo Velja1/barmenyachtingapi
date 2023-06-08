@@ -37,21 +37,88 @@ namespace BarmenYachting.API.Controllers
             _handler = handler;
         }
 
-        // GET: api/<VesselsController>
+
+
+        /// <summary>
+        /// Get Vessels.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/vessels/?keyword=m55&perPage=5&page=1
+
+        ///
+        /// </remarks>
+        /// <param name="keyword"></param>
+        /// <param name="&perpage"></param>
+        /// <param name="&page"></param>
+        /// <returns>A paged query response with objects</returns>
+        /// <response code="200">Returns the vessels query</response>
+        /// <response code="500">Returns Server error</response>      
         [HttpGet]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] IGetVesselsQuery query)
         {
-            return Ok(_handler.HandleQuery(query, search));
+            try
+            {
+                return Ok(_handler.HandleQuery(query, search));
+
+            }
+            catch (Exception ex)
+            {
+                _dbLogger.Log("Error getting vessels", ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting vessels: " + ex.Message);
+            }
         }
 
-        // GET api/<VesselsController>/5
+        /// <summary>
+        /// Get a Vessel.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/vessels/11
+        ///
+        /// </remarks>
+        /// <returns>A vessel object</returns>
+        /// <response code="200">Returns a vessel</response>
+        /// <response code="500">Returns Server error</response>    
         [HttpGet("{id}")]
         public IActionResult GetById(int id, [FromServices] IGetVesselQuery query)
         {
-            return Ok(_handler.HandleQuery(query, id));
+            try
+            {
+                return Ok(_handler.HandleQuery(query, id));
+
+            }
+            catch(Exception ex)
+            {
+                _dbLogger.Log("Error getting vessel", ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting vessel: " + ex.Message);
+            }
         }
 
-        // POST api/<VesselsController>
+        /// <summary>
+        /// Creates a Vessel.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/vessel
+        ///     {
+        ///         "model":"Test",
+        ///         "price":1,
+        ///         "width":1,
+        ///         "height":"1",
+        ///         "length":1,
+        ///         "manufacterId":1,
+        ///         "typeId":1
+        //      }
+        ///
+        /// </remarks>
+        /// <returns>Successfully created vessel message</returns>
+        /// <response code="201">Returns the successfully created message</response>
+        /// <response code="422">Returns the unprocessable entity error</response>
+        /// <response code="500">Returns Server error</response>   
         [HttpPost("/api/addVessel")]
         public IActionResult CreateVessel([FromBody] CreateVesselDto dto, [FromServices] ICreateVesselCommand command)
         {
@@ -73,7 +140,19 @@ namespace BarmenYachting.API.Controllers
             }
         }
 
-        // DELETE api/<VesselsController>/5
+        /// <summary>
+        /// Deletes a Vessel.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/vessel/11
+        ///
+        /// </remarks>
+        /// <returns>Successfully deleted vessel message</returns>
+        /// <response code="200">Returns the deleted message</response>
+        /// <response code="404">Returns the entity not found error</response>
+        /// <response code="500">Returns Server error</response>   
         [HttpDelete("{id}")]
         public IActionResult Delete(int id, [FromServices] IDeleteVesselCommand command)
         {

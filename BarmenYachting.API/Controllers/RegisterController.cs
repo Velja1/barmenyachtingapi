@@ -25,6 +25,26 @@ namespace BarmenYachting.Api.Controllers
             _dbLogger = dbLogger;
         }
 
+        /// <summary>
+        /// Register User.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/register
+        ///     {
+        ///         "Email" : "veljko.vulovic.282.18@ict.edu.rs",
+        ///         "Username" : "velja",
+        ///         "FirstName" : "Veljko",
+        ///         "LastName" : "Vulovic",
+        ///         "Password" : "Testiranje1!"
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>Successfully created user message</returns>
+        /// <response code="201">Returns the successfully created message</response>
+        /// <response code="422">Returns the unprocessable entity error</response>
+        /// <response code="500">Returns Server error</response>   
         [HttpPost]
         public IActionResult Post([FromBody] RegisterDto dto)
         {
